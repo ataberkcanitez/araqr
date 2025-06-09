@@ -5,22 +5,22 @@ import (
 )
 
 type Sticker struct {
-	ID              string
-	Active          bool
-	Name            *string
-	Description     *string
-	ImageURL        *string
-	ShowPhoneNumber bool
-	PhoneNumber     *string
-	ShowEmail       bool
-	Email           *string
-	ShowInstagram   bool
-	InstagramURL    *string
-	ShowFacebook    bool
-	FacebookURL     *string
-	UserID          string
-	CreatedAt       time.Time
-	UpdatedAt       time.Time
+	ID              string    `json:"id"`
+	Active          bool      `json:"active"`
+	Name            *string   `json:"name"`
+	Description     *string   `json:"description"`
+	ImageURL        *string   `json:"image_url"`
+	ShowPhoneNumber bool      `json:"show_phone_number"`
+	PhoneNumber     *string   `json:"phone_number"`
+	ShowEmail       bool      `json:"show_email"`
+	Email           *string   `json:"email"`
+	ShowInstagram   bool      `json:"show_instagram"`
+	InstagramURL    *string   `json:"instagram_url"`
+	ShowFacebook    bool      `json:"show_facebook"`
+	FacebookURL     *string   `json:"facebook_url"`
+	UserID          string    `json:"user_id"`
+	CreatedAt       time.Time `json:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at"`
 }
 
 func (s *Sticker) Assign(userID string) {

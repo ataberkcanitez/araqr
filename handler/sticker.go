@@ -103,14 +103,14 @@ type (
 	}
 
 	GetStickerProfileResponse struct {
-		ID           string
-		Name         *string
-		Description  *string
-		ImageURL     *string
-		PhoneNumber  *string
-		Email        *string
-		InstagramURL *string
-		FacebookURL  *string
+		ID           string  `json:"id"`
+		Name         *string `json:"name"`
+		Description  *string `json:"description"`
+		ImageURL     *string `json:"image_url"`
+		PhoneNumber  *string `json:"phone_number"`
+		Email        *string `json:"email"`
+		InstagramURL *string `json:"instagram_url"`
+		FacebookURL  *string `json:"facebook_url"`
 	}
 )
 
