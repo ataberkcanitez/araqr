@@ -18,6 +18,7 @@ type stickerSvc interface {
 	Get(ctx context.Context, req *GetStickerRequest) (*sticker.Sticker, error)
 	UpdateSticker(ctx context.Context, u *UpdateMyStickerRequest) (*sticker.Sticker, error)
 	ListMessages(ctx context.Context, l *ListMessagesRequest) ([]*sticker.Message, error)
+	CreateQrCode(ctx context.Context, d *DownloadQRCodeRequest) ([]byte, error)
 }
 
 type StickerHandler struct {
@@ -51,6 +52,9 @@ func (h *StickerHandler) RegisterRoutes(e *echo.Echo) {
 	e.PUT("/v1/stickers/:id", h.UpdateMySticker, MiddlewareTokenVerification(h.tp))
 	// Get sticker messages
 	e.GET("/v1/sticker/:id/messages", h.ListMessages, MiddlewareTokenVerification(h.tp))
+
+	// Download QR code for sticker
+	e.GET("/v1/stickers/:id/download", h.DownloadQRCode, MiddlewareTokenVerification(h.tp))
 }
 
 type (
@@ -278,4 +282,25 @@ func (h *StickerHandler) ListMessages(c echo.Context) error {
 		return errors.Wrap(err, "failed to list sticker messages")
 	}
 	return c.JSON(http.StatusOK, messages)
+}
+
+type (
+	DownloadQRCodeRequest struct {
+		ID string `param:"id"`
+	}
+)
+
+func (h *StickerHandler) DownloadQRCode(c echo.Context) error {
+	id := c.Param("id")
+	if id == "" {
+		return errors.Wrap(ErrBadRequest, "missing sticker id")
+	}
+
+	qrCode, err := h.svc.CreateQrCode(c.Request().Context(), &DownloadQRCodeRequest{ID: id})
+	if err != nil {
+		return errors.Wrap(err, "failed to create QR code")
+	}
+	c.Response().Header().Set(echo.HeaderContentType, "image/png")
+	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=sticker-"+id+"-qrcode.png")
+	return c.Blob(http.StatusOK, "image/png", qrCode)
 }
