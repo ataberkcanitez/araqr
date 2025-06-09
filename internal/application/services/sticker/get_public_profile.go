@@ -1,0 +1,38 @@
+package sticker
+
+import (
+	"context"
+	"github.com/ataberkcanitez/araqr/handler"
+	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+)
+
+func (svc *StickerService) GetPublicProfile(ctx context.Context, request *handler.GetStickerProfileRequest) (*handler.GetStickerProfileResponse, error) {
+	stx, err := svc.stickerRepository.GetByID(ctx, request.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	if stx == nil {
+		return nil, sticker.ErrStickerNotFound
+	}
+
+	var publicProfile *handler.GetStickerProfileResponse
+	publicProfile.ID = stx.ID
+	publicProfile.Name = stx.Name
+	publicProfile.Description = stx.Description
+	publicProfile.ImageURL = stx.ImageURL
+	if stx.ShowPhoneNumber {
+		publicProfile.PhoneNumber = stx.PhoneNumber
+	}
+	if stx.ShowEmail {
+		publicProfile.Email = stx.Email
+	}
+	if stx.ShowInstagram {
+		publicProfile.InstagramURL = stx.InstagramURL
+	}
+	if stx.ShowFacebook {
+		publicProfile.FacebookURL = stx.FacebookURL
+	}
+
+	return publicProfile, nil
+}

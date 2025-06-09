@@ -1,0 +1,325 @@
+{
+	"info": {
+		"_postman_id": "9be1f877-f702-4761-8d26-6bb9e013ea78",
+		"name": "araQR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14817906"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Email\": \"ataberkcanitez@hotmail.com\",\n  \"Password\": \"123123\",\n  \"FirstName\": \"ataberk\",\n  \"LastName\": \"canitez\",\n  \"PhoneNumber\": \"5385044757\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/v1/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ataberkcanitez@hotmail.com\",\n    \"password\": \"123123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/v1/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sticker",
+			"item": [
+				{
+					"name": "public",
+					"item": [
+						{
+							"name": "Get Sticker Profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/public/v1/stickers/{id}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"public",
+										"v1",
+										"stickers",
+										"{id}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send Message",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"urgency_level\": \"high\",\n  \"message\": \"aracin camlari acik kalmis\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/public/v1/stickers/030431b1-7c6e-4d2f-aa49-3d98b658fd36/message",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"public",
+										"v1",
+										"stickers",
+										"030431b1-7c6e-4d2f-aa49-3d98b658fd36",
+										"message"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "private",
+					"item": [
+						{
+							"name": "Create Sticker",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"number_of_stickers\": 20\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/v1/sticker",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"sticker"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign Sticker To User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDk0Nzg2ODIsImp0aSI6Ijc5YTEyODAxLTg1ZmQtNDgxMy1iMDlhLWM1MTA4MzhmZjVlMyIsImlhdCI6MTc0OTQ3Nzc4MiwiZW1haWwiOiJhdGFiZXJrY2FuaXRlekBob3RtYWlsLmNvbSJ9.mcXfyWAx3JUMNZeaBUl7tPu1iKcpgKwGMVVH6C_u2zA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/v1/sticker/e5a5ab03-f6e4-4f55-8570-c5c18551094c/assign",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"sticker",
+										"e5a5ab03-f6e4-4f55-8570-c5c18551094c",
+										"assign"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List My Stickers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDk0Nzg2ODIsImp0aSI6Ijc5YTEyODAxLTg1ZmQtNDgxMy1iMDlhLWM1MTA4MzhmZjVlMyIsImlhdCI6MTc0OTQ3Nzc4MiwiZW1haWwiOiJhdGFiZXJrY2FuaXRlekBob3RtYWlsLmNvbSJ9.mcXfyWAx3JUMNZeaBUl7tPu1iKcpgKwGMVVH6C_u2zA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/v1/stickers",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"stickers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Sticker",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDk0Nzk2NzEsImp0aSI6Ijc5YTEyODAxLTg1ZmQtNDgxMy1iMDlhLWM1MTA4MzhmZjVlMyIsImlhdCI6MTc0OTQ3ODc3MSwiZW1haWwiOiJhdGFiZXJrY2FuaXRlekBob3RtYWlsLmNvbSJ9.PI9aNh0a0_ULk2DoI18tjtIiTjfousjxYBoEQOeCWNs",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/v1/stickers/030431b1-7c6e-4d2f-aa49-3d98b658fd36",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"stickers",
+										"030431b1-7c6e-4d2f-aa49-3d98b658fd36"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Sticker",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDk0ODAyNDIsImp0aSI6Ijc5YTEyODAxLTg1ZmQtNDgxMy1iMDlhLWM1MTA4MzhmZjVlMyIsImlhdCI6MTc0OTQ3OTM0MiwiZW1haWwiOiJhdGFiZXJrY2FuaXRlekBob3RtYWlsLmNvbSJ9.Hl-IF_44nMoKTVCQW5YB0zmvYs4hmczU9sQO2vsdl6I",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ID\": \"030431b1-7c6e-4d2f-aa49-3d98b658fd36\",\n    \"Active\": true,\n    \"Name\": null,\n    \"Description\": null,\n    \"ImageURL\": null,\n    \"ShowPhoneNumber\": false,\n    \"PhoneNumber\": null,\n    \"ShowEmail\": false,\n    \"Email\": null,\n    \"ShowInstagram\": false,\n    \"InstagramURL\": null,\n    \"ShowFacebook\": false,\n    \"FacebookURL\": null,\n    \"UserID\": \"79a12801-85fd-4813-b09a-c510838ff5e3\",\n    \"CreatedAt\": \"2025-06-09T17:09:07.514349Z\",\n    \"UpdatedAt\": \"2025-06-09T14:22:04.060332Z\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/v1/stickers/030431b1-7c6e-4d2f-aa49-3d98b658fd36",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"stickers",
+										"030431b1-7c6e-4d2f-aa49-3d98b658fd36"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Messages",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/v1/sticker/030431b1-7c6e-4d2f-aa49-3d98b658fd36/messages",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"sticker",
+										"030431b1-7c6e-4d2f-aa49-3d98b658fd36",
+										"messages"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
