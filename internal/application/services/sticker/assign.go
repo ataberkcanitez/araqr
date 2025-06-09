@@ -14,7 +14,11 @@ func (svc *StickerService) Assign(ctx context.Context, req *handler.AssignSticke
 	}
 
 	if stx == nil {
-		return nil, errors.New("sticker not found")
+		return nil, sticker.ErrStickerNotFound
+	}
+
+	if stx.UserID != "" {
+		return nil, sticker.ErrStickerAlreadyAssigned
 	}
 
 	stx.Assign(req.UserID)
