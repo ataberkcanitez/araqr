@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/ataberkcanitez/araqr/internal/domain"
+	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
 	"github.com/ataberkcanitez/araqr/log"
 	"github.com/cockroachdb/errors"
 	"github.com/labstack/echo/v4"
@@ -42,6 +43,10 @@ func ErrorHandler(err error, c echo.Context) {
 		return
 	}
 
+	if handleStickerErr(err, c) {
+		return
+	}
+
 	_ = c.JSON(http.StatusInternalServerError, newHttpErr("-1", err.Error()))
 
 }
@@ -79,6 +84,26 @@ func handleAuthErr(err error, c echo.Context) bool {
 		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodePasswordMismatch, err.Error()))
 	} else if errors.Is(err, domain.ErrInvalidPassword) {
 		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrInvalidPassword, err.Error()))
+	} else {
+		return false
+	}
+
+	return true
+}
+
+var (
+	ErrCodeStickerNotFound        = "2000"
+	ErrCodeStickerNotOwnedByUser  = "2001"
+	ErrCodeStickerAlreadyAssigned = "2002"
+)
+
+func handleStickerErr(err error, c echo.Context) bool {
+	if errors.Is(err, sticker.ErrStickerNotFound) {
+		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodeStickerNotFound, err.Error()))
+	} else if errors.Is(err, sticker.ErrStickerNotOwnedByUser) {
+		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodeStickerNotOwnedByUser, err.Error()))
+	} else if errors.Is(err, sticker.ErrStickerAlreadyAssigned) {
+		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodeStickerAlreadyAssigned, err.Error()))
 	} else {
 		return false
 	}
