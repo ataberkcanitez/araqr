@@ -44,6 +44,12 @@ is visible and are notified via mobile app when someone scans their QR sticker a
 
 ---
 
+
+![Vertical Sequence](/assets/vertical_sequence.png)
+
+![Sequence Diagram for Sticker Owner](/assets/sticker-owner-flow.png)
+![3rd Party User Flow](/assets/3rd_party_user_flow.png)
+
 ## 📱 How It Works
 
 ### For Car Owners (QR Code Holders):
