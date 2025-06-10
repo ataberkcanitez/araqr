@@ -32,7 +32,7 @@ func ErrorHandler(err error, c echo.Context) {
 
 	ctx := c.Request().Context()
 
-	log.Error(ctx, "reqest failed, error handler captured", err)
+	log.Error(ctx, "request failed, error handler captured", err)
 
 	if errors.Is(err, ErrBadRequest) {
 		_ = c.JSON(400, newHttpErr(ErrCodeBadRequest, err.Error()))
