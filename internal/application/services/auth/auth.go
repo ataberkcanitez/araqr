@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"fmt"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	auth2 "github.com/ataberkcanitez/araqr/internal/application/ports/outbound/auth"
 	"github.com/ataberkcanitez/araqr/internal/domain"
@@ -10,7 +9,6 @@ import (
 	"github.com/cockroachdb/errors"
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
-	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
@@ -32,68 +30,6 @@ func NewAuthService(cfg *AuthConfig, userRepository auth2.UserRepository, refres
 		userRepository:         userRepository,
 		refreshTokenRepository: refreshTokenRepository,
 	}
-}
-
-func (s *AuthService) Register(ctx context.Context, in *web.RegisterReq) (*web.RegisterRes, error) {
-	if _, err := s.userRepository.GetByEmail(ctx, in.Email); err == nil {
-		return nil, errors.Wrap(errors.New("bad request"), "email already exists")
-	}
-
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(in.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return nil, errors.Wrap(err, "could not hash password")
-	}
-
-	u := &auth.User{
-		ID:          uuid.NewString(),
-		Email:       in.Email,
-		FirstName:   in.FirstName,
-		LastName:    in.LastName,
-		Password:    string(hashedPassword),
-		PhoneNumber: in.PhoneNumber,
-	}
-
-	insertedUser, err := s.userRepository.Create(ctx, u)
-	if err != nil {
-		return nil, err
-	}
-
-	return &web.RegisterRes{
-		ID:          insertedUser.ID,
-		Email:       insertedUser.Email,
-		FirstName:   insertedUser.FirstName,
-		LastName:    insertedUser.LastName,
-		PhoneNumber: insertedUser.PhoneNumber,
-		CreatedAt:   insertedUser.CreatedAt,
-	}, nil
-
-}
-
-func (s *AuthService) Login(ctx context.Context, in *web.LoginReq) (*web.LoginRes, error) {
-	user, err := s.userRepository.GetByEmail(ctx, in.Email)
-	if err != nil {
-		fmt.Println("Error fetching user by email:", err)
-		return nil, err
-	}
-
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(in.Password)); err != nil {
-		return nil, errors.Wrapf(errors.New("password mismatch"), "login: password does not match %s", err.Error())
-	}
-
-	t, err := s.generateToken(ctx, user)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := s.refreshTokenRepository.Upsert(ctx, t.RefreshToken); err != nil {
-		return nil, err
-	}
-
-	return &web.LoginRes{
-		AccessToken:  t.Token,
-		RefreshToken: t.RefreshToken.Token,
-		ExpiresAt:    t.ExpiresAt,
-	}, nil
 }
 
 type (
@@ -140,7 +76,6 @@ func (s *AuthService) generateToken(_ context.Context, user *auth.User) (*token,
 
 }
 
-// Parse parses a token
 func (s *AuthService) Parse(ctx context.Context, in *web.ParseTokenReq) (*web.ParseTokenRes, error) {
 	var claims customJwtClaims
 
