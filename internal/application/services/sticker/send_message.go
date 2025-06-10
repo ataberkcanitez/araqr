@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func (svc *StickerService) SendMessageToSticker(ctx context.Context, req *web.SendMessageToStickerRequest) (*web.SendMessageToStickerResponse, error) {
+func (svc *Service) SendMessageToSticker(ctx context.Context, req *web.SendMessageToStickerRequest) (*web.SendMessageToStickerResponse, error) {
 	stx, err := svc.stickerRepository.GetByID(ctx, req.ID)
 	if err != nil {
 		return nil, err

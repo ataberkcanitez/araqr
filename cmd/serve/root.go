@@ -70,8 +70,8 @@ type serveConfig struct {
 		Encoding string `mapstructure:"encoding"`
 		Level    string `mapstructure:"level"`
 	} `mapstructure:"log"`
-	DB   pgsql2.Config   `mapstructure:"db"`
-	Auth auth.AuthConfig `mapstructure:"auth"`
+	DB   pgsql2.Config `mapstructure:"db"`
+	Auth auth.Config   `mapstructure:"auth"`
 }
 
 func runServeHTTP(cmd *cobra.Command, _ []string) error {
@@ -181,8 +181,8 @@ func createHandlers(ctx context.Context, cfg *serveConfig) ([]serverHandler, err
 	refreshTokenPg := refresh_token.NewRepository(db)
 	messageRepository := messagesRepo.NewMessageRepository(db)
 
-	authSvc := auth.NewAuthService(&cfg.Auth, userPg, refreshTokenPg)
-	stickerSvc := sticker.NewStickerService(userPg, stickerRepository, messageRepository)
+	authSvc := auth.NewService(&cfg.Auth, userPg, refreshTokenPg)
+	stickerSvc := sticker.NewService(userPg, stickerRepository, messageRepository)
 
 	return []serverHandler{
 		web.NewAuthHandler(authSvc),

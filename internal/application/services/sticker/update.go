@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (svc *StickerService) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerRequest) (*sticker.Sticker, error) {
+func (svc *Service) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerRequest) (*sticker.Sticker, error) {
 	stx, err := svc.Get(ctx, &web.GetStickerRequest{ID: req.ID})
 	if err != nil {
 		return nil, err

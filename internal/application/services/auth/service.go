@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
-	auth2 "github.com/ataberkcanitez/araqr/internal/application/ports/outbound/auth"
+	authout "github.com/ataberkcanitez/araqr/internal/application/ports/outbound/auth"
 	"github.com/ataberkcanitez/araqr/internal/domain"
 	"github.com/ataberkcanitez/araqr/internal/domain/auth"
 	"github.com/cockroachdb/errors"
@@ -12,20 +12,20 @@ import (
 	"time"
 )
 
-type AuthConfig struct {
+type Config struct {
 	SecretKey          string        `mapstructure:"secret-key"`
 	AccessTokenExpiry  time.Duration `mapstructure:"access-token-expiry"`
 	RefreshTokenExpiry time.Duration `mapstructure:"refresh-token-expiry"`
 }
 
-type AuthService struct {
-	cfg                    *AuthConfig
-	userRepository         auth2.UserRepository
-	refreshTokenRepository auth2.RefreshTokenRepository
+type Service struct {
+	cfg                    *Config
+	userRepository         authout.UserRepository
+	refreshTokenRepository authout.RefreshTokenRepository
 }
 
-func NewAuthService(cfg *AuthConfig, userRepository auth2.UserRepository, refreshTokenRepository auth2.RefreshTokenRepository) *AuthService {
-	return &AuthService{
+func NewService(cfg *Config, userRepository authout.UserRepository, refreshTokenRepository authout.RefreshTokenRepository) *Service {
+	return &Service{
 		cfg:                    cfg,
 		userRepository:         userRepository,
 		refreshTokenRepository: refreshTokenRepository,
@@ -45,7 +45,7 @@ type (
 	}
 )
 
-func (s *AuthService) generateToken(_ context.Context, user *auth.User) (*token, error) {
+func (s *Service) generateToken(_ context.Context, user *auth.User) (*token, error) {
 	now := time.Now().UTC()
 	accessTokenExpiresAt := now.Add(s.cfg.AccessTokenExpiry)
 
@@ -76,7 +76,7 @@ func (s *AuthService) generateToken(_ context.Context, user *auth.User) (*token,
 
 }
 
-func (s *AuthService) Parse(ctx context.Context, in *web.ParseTokenReq) (*web.ParseTokenRes, error) {
+func (s *Service) Parse(_ context.Context, in *web.ParseTokenReq) (*web.ParseTokenRes, error) {
 	var claims customJwtClaims
 
 	_, err := jwt.ParseWithClaims(in.Token, &claims, func(token *jwt.Token) (interface{}, error) {

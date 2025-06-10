@@ -6,7 +6,7 @@ import (
 	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
 )
 
-func (svc *StickerService) ListMessages(ctx context.Context, req *web.ListMessagesRequest) ([]*sticker.Message, error) {
+func (svc *Service) ListMessages(ctx context.Context, req *web.ListMessagesRequest) ([]*sticker.Message, error) {
 	stx, err := svc.Get(ctx, &web.GetStickerRequest{ID: req.ID})
 	if err != nil {
 		return nil, err

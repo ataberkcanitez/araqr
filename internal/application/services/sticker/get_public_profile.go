@@ -6,7 +6,7 @@ import (
 	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
 )
 
-func (svc *StickerService) GetPublicProfile(ctx context.Context, request *web.GetStickerProfileRequest) (*web.GetStickerProfileResponse, error) {
+func (svc *Service) GetPublicProfile(ctx context.Context, request *web.GetStickerProfileRequest) (*web.GetStickerProfileResponse, error) {
 	stx, err := svc.stickerRepository.GetByID(ctx, request.ID)
 	if err != nil {
 		return nil, err

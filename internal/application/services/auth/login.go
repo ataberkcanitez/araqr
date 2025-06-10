@@ -7,7 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *AuthService) Login(ctx context.Context, in *web.LoginReq) (*web.LoginRes, error) {
+func (s *Service) Login(ctx context.Context, in *web.LoginReq) (*web.LoginRes, error) {
 	user, err := s.userRepository.GetByEmail(ctx, in.Email)
 	if err != nil {
 		return nil, err

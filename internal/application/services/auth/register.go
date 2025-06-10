@@ -9,7 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *AuthService) Register(ctx context.Context, in *web.RegisterReq) (*web.RegisterRes, error) {
+func (s *Service) Register(ctx context.Context, in *web.RegisterReq) (*web.RegisterRes, error) {
 	if _, err := s.userRepository.GetByEmail(ctx, in.Email); err == nil {
 		return nil, errors.Wrap(errors.New("bad request"), "email already exists")
 	}

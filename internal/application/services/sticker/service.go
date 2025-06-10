@@ -6,18 +6,18 @@ import (
 	"github.com/ataberkcanitez/araqr/internal/application/ports/outbound/sticker"
 )
 
-type StickerService struct {
+type Service struct {
 	userRepository    auth.UserRepository
 	stickerRepository sticker.Repository
 	messageRepository message.Repository
 }
 
-func NewStickerService(
+func NewService(
 	userRepository auth.UserRepository,
 	stickerRepository sticker.Repository,
 	messageRepository message.Repository,
-) *StickerService {
-	return &StickerService{
+) *Service {
+	return &Service{
 		userRepository:    userRepository,
 		stickerRepository: stickerRepository,
 		messageRepository: messageRepository,

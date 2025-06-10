@@ -9,11 +9,11 @@ import (
 	"time"
 )
 
-func (svc *StickerService) Create(ctx context.Context, req *web.CreateStickerRequest) ([]string, error) {
+func (svc *Service) Create(ctx context.Context, req *web.CreateStickerRequest) ([]string, error) {
 	now := time.Now()
 	var stickerIds []string
 	for i := 0; i < req.NumberOfStickers; i++ {
-		sticker := &sticker.Sticker{
+		stx := &sticker.Sticker{
 			ID:              uuid.NewString(),
 			Active:          false,
 			ShowPhoneNumber: false,
@@ -23,11 +23,11 @@ func (svc *StickerService) Create(ctx context.Context, req *web.CreateStickerReq
 			CreatedAt:       now,
 			UpdatedAt:       now,
 		}
-		_, err := svc.stickerRepository.Create(ctx, sticker)
+		_, err := svc.stickerRepository.Create(ctx, stx)
 		if err != nil {
 			return []string{}, errors.Wrap(err, "failed to create sticker")
 		}
-		stickerIds = append(stickerIds, sticker.ID)
+		stickerIds = append(stickerIds, stx.ID)
 	}
 	return stickerIds, nil
 }
