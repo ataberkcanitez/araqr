@@ -7,7 +7,7 @@ import (
 	"github.com/ataberkcanitez/araqr/internal/domain"
 	"github.com/ataberkcanitez/araqr/internal/domain/auth"
 	"github.com/cockroachdb/errors"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"time"
 )
@@ -34,7 +34,7 @@ func NewService(cfg *Config, userRepository authout.UserRepository, refreshToken
 
 type (
 	customJwtClaims struct {
-		jwt.StandardClaims
+		jwt.RegisteredClaims
 		Email string `json:"email"`
 	}
 
@@ -50,12 +50,12 @@ func (s *Service) generateToken(_ context.Context, user *auth.User) (*token, err
 	accessTokenExpiresAt := now.Add(s.cfg.AccessTokenExpiry)
 
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, customJwtClaims{
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: accessTokenExpiresAt.Unix(),
-			Id:        user.ID,
-			IssuedAt:  now.Unix(),
-		},
 		Email: user.Email,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(accessTokenExpiresAt),
+			IssuedAt:  jwt.NewNumericDate(now),
+			ID:        user.ID,
+		},
 	})
 
 	signedToken, err := jwtToken.SignedString([]byte(s.cfg.SecretKey))
@@ -90,7 +90,7 @@ func (s *Service) Parse(_ context.Context, in *web.ParseTokenReq) (*web.ParseTok
 	}
 
 	return &web.ParseTokenRes{
-		ID:    claims.Id,
+		ID:    claims.ID,
 		Email: claims.Email,
 	}, nil
 }
