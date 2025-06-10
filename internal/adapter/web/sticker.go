@@ -247,7 +247,7 @@ func (h *StickerHandler) UpdateMySticker(c echo.Context) error {
 
 	stx, err := h.svc.UpdateSticker(c.Request().Context(), &req)
 	if err != nil {
-		return errors.Wrap(err, "failed to update sticker")
+		return err
 	}
 
 	return c.JSON(http.StatusOK, stx)

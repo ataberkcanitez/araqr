@@ -101,9 +101,9 @@ func handleStickerErr(err error, c echo.Context) bool {
 	if errors.Is(err, sticker.ErrStickerNotFound) {
 		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodeStickerNotFound, err.Error()))
 	} else if errors.Is(err, sticker.ErrStickerNotOwnedByUser) {
-		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodeStickerNotOwnedByUser, err.Error()))
+		_ = c.JSON(http.StatusUnauthorized, newHttpErr(ErrCodeStickerNotOwnedByUser, err.Error()))
 	} else if errors.Is(err, sticker.ErrStickerAlreadyAssigned) {
-		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodeStickerAlreadyAssigned, err.Error()))
+		_ = c.JSON(http.StatusConflict, newHttpErr(ErrCodeStickerAlreadyAssigned, err.Error()))
 	} else {
 		return false
 	}
