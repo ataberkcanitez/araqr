@@ -4,15 +4,15 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/ataberkcanitez/araqr/handler"
+	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/qr"
 	"image/png"
 )
 
-func (svc *StickerService) CreateQrCode(ctx context.Context, req *handler.DownloadQRCodeRequest) ([]byte, error) {
-	stx, err := svc.Get(ctx, &handler.GetStickerRequest{ID: req.ID})
+func (svc *StickerService) CreateQrCode(ctx context.Context, req *web.DownloadQRCodeRequest) ([]byte, error) {
+	stx, err := svc.Get(ctx, &web.GetStickerRequest{ID: req.ID})
 	if err != nil {
 		return nil, err
 	}

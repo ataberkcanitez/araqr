@@ -2,14 +2,14 @@ package sticker
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/handler"
+	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
 	"github.com/cockroachdb/errors"
 	"github.com/google/uuid"
 	"time"
 )
 
-func (svc *StickerService) Create(ctx context.Context, req *handler.CreateStickerRequest) ([]string, error) {
+func (svc *StickerService) Create(ctx context.Context, req *web.CreateStickerRequest) ([]string, error) {
 	now := time.Now()
 	var stickerIds []string
 	for i := 0; i < req.NumberOfStickers; i++ {

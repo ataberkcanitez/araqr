@@ -2,11 +2,11 @@ package sticker
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/handler"
+	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
 )
 
-func (svc *StickerService) GetPublicProfile(ctx context.Context, request *handler.GetStickerProfileRequest) (*handler.GetStickerProfileResponse, error) {
+func (svc *StickerService) GetPublicProfile(ctx context.Context, request *web.GetStickerProfileRequest) (*web.GetStickerProfileResponse, error) {
 	stx, err := svc.stickerRepository.GetByID(ctx, request.ID)
 	if err != nil {
 		return nil, err
@@ -16,7 +16,7 @@ func (svc *StickerService) GetPublicProfile(ctx context.Context, request *handle
 		return nil, sticker.ErrStickerNotFound
 	}
 
-	var publicProfile *handler.GetStickerProfileResponse
+	var publicProfile *web.GetStickerProfileResponse
 	publicProfile.ID = stx.ID
 	publicProfile.Name = stx.Name
 	publicProfile.Description = stx.Description

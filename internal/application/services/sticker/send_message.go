@@ -2,13 +2,13 @@ package sticker
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/handler"
+	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
 	"github.com/google/uuid"
 	"time"
 )
 
-func (svc *StickerService) SendMessageToSticker(ctx context.Context, req *handler.SendMessageToStickerRequest) (*handler.SendMessageToStickerResponse, error) {
+func (svc *StickerService) SendMessageToSticker(ctx context.Context, req *web.SendMessageToStickerRequest) (*web.SendMessageToStickerResponse, error) {
 	stx, err := svc.stickerRepository.GetByID(ctx, req.ID)
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func (svc *StickerService) SendMessageToSticker(ctx context.Context, req *handle
 		return nil, err
 	}
 
-	return &handler.SendMessageToStickerResponse{
+	return &web.SendMessageToStickerResponse{
 		ID:      msg.ID,
 		Message: "Message sent successfully",
 	}, nil

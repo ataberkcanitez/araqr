@@ -2,12 +2,12 @@ package sticker
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/handler"
+	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
 	"github.com/cockroachdb/errors"
 )
 
-func (svc *StickerService) Assign(ctx context.Context, req *handler.AssignStickerRequest) (*sticker.Sticker, error) {
+func (svc *StickerService) Assign(ctx context.Context, req *web.AssignStickerRequest) (*sticker.Sticker, error) {
 	stx, err := svc.stickerRepository.GetByID(ctx, req.StickerID)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get sticker")

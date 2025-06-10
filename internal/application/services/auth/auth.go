@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"fmt"
-	"github.com/ataberkcanitez/araqr/handler"
+	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	auth2 "github.com/ataberkcanitez/araqr/internal/application/ports/outbound/auth"
 	"github.com/ataberkcanitez/araqr/internal/domain"
 	"github.com/ataberkcanitez/araqr/internal/domain/auth"
@@ -34,7 +34,7 @@ func NewAuthService(cfg *AuthConfig, userRepository auth2.UserRepository, refres
 	}
 }
 
-func (s *AuthService) Register(ctx context.Context, in *handler.RegisterReq) (*handler.RegisterRes, error) {
+func (s *AuthService) Register(ctx context.Context, in *web.RegisterReq) (*web.RegisterRes, error) {
 	if _, err := s.userRepository.GetByEmail(ctx, in.Email); err == nil {
 		return nil, errors.Wrap(errors.New("bad request"), "email already exists")
 	}
@@ -58,7 +58,7 @@ func (s *AuthService) Register(ctx context.Context, in *handler.RegisterReq) (*h
 		return nil, err
 	}
 
-	return &handler.RegisterRes{
+	return &web.RegisterRes{
 		ID:          insertedUser.ID,
 		Email:       insertedUser.Email,
 		FirstName:   insertedUser.FirstName,
@@ -69,7 +69,7 @@ func (s *AuthService) Register(ctx context.Context, in *handler.RegisterReq) (*h
 
 }
 
-func (s *AuthService) Login(ctx context.Context, in *handler.LoginReq) (*handler.LoginRes, error) {
+func (s *AuthService) Login(ctx context.Context, in *web.LoginReq) (*web.LoginRes, error) {
 	user, err := s.userRepository.GetByEmail(ctx, in.Email)
 	if err != nil {
 		fmt.Println("Error fetching user by email:", err)
@@ -89,7 +89,7 @@ func (s *AuthService) Login(ctx context.Context, in *handler.LoginReq) (*handler
 		return nil, err
 	}
 
-	return &handler.LoginRes{
+	return &web.LoginRes{
 		AccessToken:  t.Token,
 		RefreshToken: t.RefreshToken.Token,
 		ExpiresAt:    t.ExpiresAt,
@@ -141,7 +141,7 @@ func (s *AuthService) generateToken(_ context.Context, user *auth.User) (*token,
 }
 
 // Parse parses a token
-func (s *AuthService) Parse(ctx context.Context, in *handler.ParseTokenReq) (*handler.ParseTokenRes, error) {
+func (s *AuthService) Parse(ctx context.Context, in *web.ParseTokenReq) (*web.ParseTokenRes, error) {
 	var claims customJwtClaims
 
 	_, err := jwt.ParseWithClaims(in.Token, &claims, func(token *jwt.Token) (interface{}, error) {
@@ -154,7 +154,7 @@ func (s *AuthService) Parse(ctx context.Context, in *handler.ParseTokenReq) (*ha
 		return nil, errors.Wrap(domain.ErrInvalidToken, err.Error())
 	}
 
-	return &handler.ParseTokenRes{
+	return &web.ParseTokenRes{
 		ID:    claims.Id,
 		Email: claims.Email,
 	}, nil

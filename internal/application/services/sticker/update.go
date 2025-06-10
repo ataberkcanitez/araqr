@@ -2,13 +2,13 @@ package sticker
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/handler"
+	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
 	"time"
 )
 
-func (svc *StickerService) UpdateSticker(ctx context.Context, req *handler.UpdateMyStickerRequest) (*sticker.Sticker, error) {
-	stx, err := svc.Get(ctx, &handler.GetStickerRequest{ID: req.ID})
+func (svc *StickerService) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerRequest) (*sticker.Sticker, error) {
+	stx, err := svc.Get(ctx, &web.GetStickerRequest{ID: req.ID})
 	if err != nil {
 		return nil, err
 	}

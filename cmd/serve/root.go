@@ -2,13 +2,13 @@ package serve
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/handler"
+	messagesRepo "github.com/ataberkcanitez/araqr/internal/adapter/repository/message"
+	"github.com/ataberkcanitez/araqr/internal/adapter/repository/refresh_token"
+	stickerRepo "github.com/ataberkcanitez/araqr/internal/adapter/repository/sticker"
+	"github.com/ataberkcanitez/araqr/internal/adapter/repository/user"
+	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/application/services/auth"
 	"github.com/ataberkcanitez/araqr/internal/application/services/sticker"
-	messagesRepo "github.com/ataberkcanitez/araqr/internal/infrastructure/pgsql/message"
-	"github.com/ataberkcanitez/araqr/internal/infrastructure/pgsql/refresh_token"
-	stickerRepo "github.com/ataberkcanitez/araqr/internal/infrastructure/pgsql/sticker"
-	"github.com/ataberkcanitez/araqr/internal/infrastructure/pgsql/user"
 	"github.com/ataberkcanitez/araqr/log"
 	"github.com/ataberkcanitez/araqr/pgsql"
 	pgsql2 "github.com/ataberkcanitez/araqr/pgsql"
@@ -124,7 +124,7 @@ func runServeHTTP(cmd *cobra.Command, _ []string) error {
 		return c.String(http.StatusOK, "OK")
 	})
 
-	e.HTTPErrorHandler = handler.ErrorHandler
+	e.HTTPErrorHandler = web.ErrorHandler
 
 	handlers, err := createHandlers(ctx, &cfg)
 	if err != nil {
@@ -185,7 +185,7 @@ func createHandlers(ctx context.Context, cfg *serveConfig) ([]serverHandler, err
 	stickerSvc := sticker.NewStickerService(userPg, stickerRepository, messageRepository)
 
 	return []serverHandler{
-		handler.NewAuthHandler(authSvc),
-		handler.NewStickerHandler(stickerSvc, authSvc),
+		web.NewAuthHandler(authSvc),
+		web.NewStickerHandler(stickerSvc, authSvc),
 	}, nil
 }
