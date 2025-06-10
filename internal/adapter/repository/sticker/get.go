@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	"github.com/cockroachdb/errors"
+	"github.com/jackc/pgx/v4"
 )
 
 const GetStickerQuery = `
@@ -49,6 +51,9 @@ func (r *Repository) GetByID(ctx context.Context, id string) (*sticker.Sticker, 
 		&s.UpdatedAt,
 	)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, sticker.ErrStickerNotFound
+		}
 		return nil, err
 	}
 	return &s, nil

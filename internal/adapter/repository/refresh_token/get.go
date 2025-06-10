@@ -2,7 +2,10 @@ package refresh_token
 
 import (
 	"context"
+	"github.com/ataberkcanitez/araqr/internal/domain"
 	"github.com/ataberkcanitez/araqr/internal/domain/auth"
+	"github.com/cockroachdb/errors"
+	"github.com/jackc/pgx/v4"
 )
 
 const getRefreshTokenQuery = `SELECT * FROM refresh_tokens WHERE token = $1`
@@ -19,6 +22,9 @@ func (r *Repository) Get(ctx context.Context, token string) (*auth.RefreshToken,
 	)
 
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, domain.ErrInvalidToken
+		}
 		return nil, err
 	}
 
