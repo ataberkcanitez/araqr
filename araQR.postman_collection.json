@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"Email\": \"ataberkcanitez@hotmail.com\",\n  \"Password\": \"123123\",\n  \"FirstName\": \"ataberk\",\n  \"LastName\": \"canitez\",\n  \"PhoneNumber\": \"5385044757\"\n}",
+							"raw": "{\n  \"email\": \"ataberkcanitez@hotmail.com\",\n  \"password\": \"123123\",\n  \"first_name\": \"ataberk\",\n  \"last_name\": \"canitez\",\n  \"phone_number\": \"5385044757\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -39,6 +39,19 @@
 				},
 				{
 					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"pm.environment.set(\"access_token\", response.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -133,6 +146,16 @@
 						{
 							"name": "Create Sticker",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -166,7 +189,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDk0Nzg2ODIsImp0aSI6Ijc5YTEyODAxLTg1ZmQtNDgxMy1iMDlhLWM1MTA4MzhmZjVlMyIsImlhdCI6MTc0OTQ3Nzc4MiwiZW1haWwiOiJhdGFiZXJrY2FuaXRlekBob3RtYWlsLmNvbSJ9.mcXfyWAx3JUMNZeaBUl7tPu1iKcpgKwGMVVH6C_u2zA",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
@@ -183,7 +206,7 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8080/v1/sticker/e5a5ab03-f6e4-4f55-8570-c5c18551094c/assign",
+									"raw": "localhost:8080/v1/sticker/030431b1-7c6e-4d2f-aa49-3d98b658fd36/assign",
 									"host": [
 										"localhost"
 									],
@@ -191,7 +214,7 @@
 									"path": [
 										"v1",
 										"sticker",
-										"e5a5ab03-f6e4-4f55-8570-c5c18551094c",
+										"030431b1-7c6e-4d2f-aa49-3d98b658fd36",
 										"assign"
 									]
 								}
@@ -206,7 +229,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDk0Nzg2ODIsImp0aSI6Ijc5YTEyODAxLTg1ZmQtNDgxMy1iMDlhLWM1MTA4MzhmZjVlMyIsImlhdCI6MTc0OTQ3Nzc4MiwiZW1haWwiOiJhdGFiZXJrY2FuaXRlekBob3RtYWlsLmNvbSJ9.mcXfyWAx3JUMNZeaBUl7tPu1iKcpgKwGMVVH6C_u2zA",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
@@ -235,7 +258,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDk0Nzk2NzEsImp0aSI6Ijc5YTEyODAxLTg1ZmQtNDgxMy1iMDlhLWM1MTA4MzhmZjVlMyIsImlhdCI6MTc0OTQ3ODc3MSwiZW1haWwiOiJhdGFiZXJrY2FuaXRlekBob3RtYWlsLmNvbSJ9.PI9aNh0a0_ULk2DoI18tjtIiTjfousjxYBoEQOeCWNs",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
@@ -265,7 +288,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDk0ODAyNDIsImp0aSI6Ijc5YTEyODAxLTg1ZmQtNDgxMy1iMDlhLWM1MTA4MzhmZjVlMyIsImlhdCI6MTc0OTQ3OTM0MiwiZW1haWwiOiJhdGFiZXJrY2FuaXRlekBob3RtYWlsLmNvbSJ9.Hl-IF_44nMoKTVCQW5YB0zmvYs4hmczU9sQO2vsdl6I",
+											"value": "{{access_token}}",
 											"type": "string"
 										}
 									]
@@ -274,7 +297,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"ID\": \"030431b1-7c6e-4d2f-aa49-3d98b658fd36\",\n    \"Active\": true,\n    \"Name\": null,\n    \"Description\": null,\n    \"ImageURL\": null,\n    \"ShowPhoneNumber\": false,\n    \"PhoneNumber\": null,\n    \"ShowEmail\": false,\n    \"Email\": null,\n    \"ShowInstagram\": false,\n    \"InstagramURL\": null,\n    \"ShowFacebook\": false,\n    \"FacebookURL\": null,\n    \"UserID\": \"79a12801-85fd-4813-b09a-c510838ff5e3\",\n    \"CreatedAt\": \"2025-06-09T17:09:07.514349Z\",\n    \"UpdatedAt\": \"2025-06-09T14:22:04.060332Z\"\n}",
+									"raw": "{\n    \"ID\": \"030431b1-7c6e-4d2f-aa49-3d98b658fd36\",\n    \"Active\": true,\n    \"Name\": \"35 BTM 715\",\n    \"Description\": null,\n    \"ImageURL\": null,\n    \"ShowPhoneNumber\": false,\n    \"PhoneNumber\": null,\n    \"ShowEmail\": false,\n    \"Email\": null,\n    \"ShowInstagram\": false,\n    \"InstagramURL\": null,\n    \"ShowFacebook\": false,\n    \"FacebookURL\": null\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -299,6 +322,16 @@
 						{
 							"name": "List Messages",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -312,6 +345,37 @@
 										"sticker",
 										"030431b1-7c6e-4d2f-aa49-3d98b658fd36",
 										"messages"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Download QR",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/v1/stickers/030431b1-7c6e-4d2f-aa49-3d98b658fd36/download",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"stickers",
+										"030431b1-7c6e-4d2f-aa49-3d98b658fd36",
+										"download"
 									]
 								}
 							},
