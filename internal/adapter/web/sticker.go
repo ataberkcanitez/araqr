@@ -291,16 +291,20 @@ type (
 )
 
 func (h *StickerHandler) DownloadQRCode(c echo.Context) error {
-	id := c.Param("id")
-	if id == "" {
+	var req DownloadQRCodeRequest
+	if err := c.Bind(&req); err != nil {
+		return errors.Wrap(ErrBadRequest, err.Error())
+	}
+
+	if req.ID == "" {
 		return errors.Wrap(ErrBadRequest, "missing sticker id")
 	}
 
-	qrCode, err := h.svc.CreateQrCode(c.Request().Context(), &DownloadQRCodeRequest{ID: id})
+	qrCode, err := h.svc.CreateQrCode(c.Request().Context(), &req)
 	if err != nil {
 		return errors.Wrap(err, "failed to create QR code")
 	}
 	c.Response().Header().Set(echo.HeaderContentType, "image/png")
-	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=sticker-"+id+"-qrcode.png")
+	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=sticker-"+req.ID+"-qrcode.png")
 	return c.Blob(http.StatusOK, "image/png", qrCode)
 }
