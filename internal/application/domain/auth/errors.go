@@ -1,4 +1,4 @@
-package domain
+package auth
 
 import "errors"
 
@@ -23,4 +23,6 @@ var (
 	ErrResetTokenExpired = errors.New("reset token is expired")
 	// ErrSamePassword is returned when the user attempts to update their password but provides the same password as the current one.
 	ErrSamePassword = errors.New("same password")
+	// ErrPasswordTooShort is returned when the password is too short
+	ErrPasswordTooShort = errors.New("password must be at least 6 characters long")
 )

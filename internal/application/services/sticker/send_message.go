@@ -3,7 +3,7 @@ package sticker
 import (
 	"context"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	sticker2 "github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/google/uuid"
 	"time"
 )
@@ -14,18 +14,19 @@ func (svc *Service) SendMessageToSticker(ctx context.Context, req *web.SendMessa
 		return nil, err
 	}
 	if stx == nil {
-		return nil, sticker.ErrStickerNotFound
+		return nil, sticker2.ErrStickerNotFound
 	}
 
 	if !stx.Active {
-		return nil, sticker.ErrStickerNotFound
+		return nil, sticker2.ErrStickerNotFound
 	}
 
-	msg := &sticker.Message{
+	msg := &sticker2.Message{
 		ID:           uuid.NewString(),
 		StickerID:    req.ID,
 		Message:      req.Message,
 		UrgencyLevel: req.UrgencyLevel,
+		Read:         false,
 		CreatedAt:    time.Now(),
 	}
 	if err := svc.messageRepository.Create(ctx, msg); err != nil {

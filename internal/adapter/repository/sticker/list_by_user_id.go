@@ -2,8 +2,7 @@ package sticker
 
 import (
 	"context"
-	"fmt"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 )
 
 const ListStickersByUserIDQuery = `
@@ -30,7 +29,6 @@ LIMIT $2 OFFSET $3
 `
 
 func (r *Repository) ListByUserID(ctx context.Context, userID string, limit, page int) ([]*sticker.Sticker, error) {
-	fmt.Println("page:", page, "limit:", limit, "userID:", userID)
 	rows, err := r.DB.Query(ctx, ListStickersByUserIDQuery, userID, limit, page)
 	if err != nil {
 		return nil, err

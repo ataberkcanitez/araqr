@@ -3,7 +3,7 @@ package sticker
 import (
 	"context"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/cockroachdb/errors"
 	"github.com/google/uuid"
 	"time"

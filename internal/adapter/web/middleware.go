@@ -2,7 +2,7 @@ package web
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/internal/domain"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/auth"
 	"github.com/cockroachdb/errors"
 	"strings"
 
@@ -30,7 +30,7 @@ func MiddlewareTokenVerification(parser tokenParser) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			authorizationHeaderToken := c.Request().Header.Get("Authorization")
 			if authorizationHeaderToken == "" || !strings.HasPrefix(authorizationHeaderToken, "Bearer ") {
-				return domain.ErrAuthBearerHeaderNotFound
+				return auth.ErrAuthBearerHeaderNotFound
 			}
 
 			authorizationToken := strings.TrimPrefix(authorizationHeaderToken, "Bearer ")

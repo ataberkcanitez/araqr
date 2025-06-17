@@ -3,8 +3,9 @@ package sticker
 import (
 	"context"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/cockroachdb/errors"
+	"sort"
 )
 
 func (svc *Service) ListMyStickers(ctx context.Context, req *web.ListMyStickersRequest) (*web.ListMyStickersResponse, error) {
@@ -18,6 +19,11 @@ func (svc *Service) ListMyStickers(ctx context.Context, req *web.ListMyStickersR
 		}, nil
 
 	}
+
+	sort.SliceStable(stickers, func(i, j int) bool {
+		return stickers[i].Active && !stickers[j].Active
+	})
+
 	return &web.ListMyStickersResponse{
 		Stickers: stickers,
 	}, nil

@@ -1,8 +1,8 @@
 package web
 
 import (
-	"github.com/ataberkcanitez/araqr/internal/domain"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/auth"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/ataberkcanitez/araqr/log"
 	"github.com/cockroachdb/errors"
 	"github.com/labstack/echo/v4"
@@ -66,23 +66,23 @@ var (
 // handleAuthErr sends the auth error to the client
 // returns true if the error is handled by this function otherwise false
 func handleAuthErr(err error, c echo.Context) bool {
-	if errors.Is(err, domain.ErrAuthBearerHeaderNotFound) {
+	if errors.Is(err, auth.ErrAuthBearerHeaderNotFound) {
 		_ = c.JSON(http.StatusUnauthorized, newHttpErr(ErrCodeAuthBearerHeaderNotFound, err.Error()))
-	} else if errors.Is(err, domain.ErrInvalidToken) {
+	} else if errors.Is(err, auth.ErrInvalidToken) {
 		_ = c.JSON(http.StatusUnauthorized, newHttpErr(ErrCodeAuthInvalidToken, err.Error()))
-	} else if errors.Is(err, domain.ErrUserAlreadyExists) {
+	} else if errors.Is(err, auth.ErrUserAlreadyExists) {
 		_ = c.JSON(http.StatusConflict, newHttpErr(ErrCodeUserAlreadyExists, err.Error()))
-	} else if errors.Is(err, domain.ErrUserNotFound) {
+	} else if errors.Is(err, auth.ErrUserNotFound) {
 		_ = c.JSON(http.StatusNotFound, newHttpErr(ErrCodeUserNotFound, err.Error()))
-	} else if errors.Is(err, domain.ErrResetTokenNotFound) {
+	} else if errors.Is(err, auth.ErrResetTokenNotFound) {
 		_ = c.JSON(http.StatusNotFound, newHttpErr(ErrCodeResetTokenNotFound, err.Error()))
-	} else if errors.Is(err, domain.ErrResetTokenExpired) {
+	} else if errors.Is(err, auth.ErrResetTokenExpired) {
 		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodeResetTokenExpired, err.Error()))
-	} else if errors.Is(err, domain.ErrSamePassword) {
+	} else if errors.Is(err, auth.ErrSamePassword) {
 		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodeSamePassword, err.Error()))
-	} else if errors.Is(err, domain.ErrPasswordMismatch) {
+	} else if errors.Is(err, auth.ErrPasswordMismatch) {
 		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrCodePasswordMismatch, err.Error()))
-	} else if errors.Is(err, domain.ErrInvalidPassword) {
+	} else if errors.Is(err, auth.ErrInvalidPassword) {
 		_ = c.JSON(http.StatusBadRequest, newHttpErr(ErrInvalidPassword, err.Error()))
 	} else {
 		return false

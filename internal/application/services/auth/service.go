@@ -3,9 +3,8 @@ package auth
 import (
 	"context"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
+	auth2 "github.com/ataberkcanitez/araqr/internal/application/domain/auth"
 	authout "github.com/ataberkcanitez/araqr/internal/application/ports/outbound/auth"
-	"github.com/ataberkcanitez/araqr/internal/domain"
-	"github.com/ataberkcanitez/araqr/internal/domain/auth"
 	"github.com/cockroachdb/errors"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
@@ -40,12 +39,12 @@ type (
 
 	token struct {
 		Token        string
-		RefreshToken *auth.RefreshToken
+		RefreshToken *auth2.RefreshToken
 		ExpiresAt    time.Time
 	}
 )
 
-func (s *Service) generateToken(_ context.Context, user *auth.User) (*token, error) {
+func (s *Service) generateToken(_ context.Context, user *auth2.User) (*token, error) {
 	now := time.Now().UTC()
 	accessTokenExpiresAt := now.Add(s.cfg.AccessTokenExpiry)
 
@@ -65,7 +64,7 @@ func (s *Service) generateToken(_ context.Context, user *auth.User) (*token, err
 
 	return &token{
 		Token: signedToken,
-		RefreshToken: &auth.RefreshToken{
+		RefreshToken: &auth2.RefreshToken{
 			UserID:     user.ID,
 			Token:      uuid.NewString(),
 			Valid:      true,
@@ -81,12 +80,12 @@ func (s *Service) Parse(_ context.Context, in *web.ParseTokenReq) (*web.ParseTok
 
 	_, err := jwt.ParseWithClaims(in.Token, &claims, func(token *jwt.Token) (interface{}, error) {
 		if token.Method != jwt.SigningMethodHS256 {
-			return nil, errors.Wrap(domain.ErrInvalidTokenSigningMethod, "parse: invalid signing method")
+			return nil, errors.Wrap(auth2.ErrInvalidTokenSigningMethod, "parse: invalid signing method")
 		}
 		return []byte(s.cfg.SecretKey), nil
 	})
 	if err != nil {
-		return nil, errors.Wrap(domain.ErrInvalidToken, err.Error())
+		return nil, errors.Wrap(auth2.ErrInvalidToken, err.Error())
 	}
 
 	return &web.ParseTokenRes{

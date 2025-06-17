@@ -3,22 +3,22 @@ package sticker
 import (
 	"context"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	sticker2 "github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/cockroachdb/errors"
 )
 
-func (svc *Service) Assign(ctx context.Context, req *web.AssignStickerRequest) (*sticker.Sticker, error) {
+func (svc *Service) Assign(ctx context.Context, req *web.AssignStickerRequest) (*sticker2.Sticker, error) {
 	stx, err := svc.stickerRepository.GetByID(ctx, req.StickerID)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get sticker")
 	}
 
 	if stx == nil {
-		return nil, sticker.ErrStickerNotFound
+		return nil, sticker2.ErrStickerNotFound
 	}
 
 	if stx.UserID != "" {
-		return nil, sticker.ErrStickerAlreadyAssigned
+		return nil, sticker2.ErrStickerAlreadyAssigned
 	}
 
 	stx.Assign(req.UserID)

@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
-	"github.com/ataberkcanitez/araqr/internal/domain/auth"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/auth"
 	"github.com/cockroachdb/errors"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"

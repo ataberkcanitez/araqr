@@ -3,7 +3,7 @@ package web
 import (
 	"context"
 	"fmt"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	sticker2 "github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/cockroachdb/errors"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -11,14 +11,15 @@ import (
 
 type stickerSvc interface {
 	Create(ctx context.Context, req *CreateStickerRequest) ([]string, error)
-	Assign(ctx context.Context, req *AssignStickerRequest) (*sticker.Sticker, error)
+	Assign(ctx context.Context, req *AssignStickerRequest) (*sticker2.Sticker, error)
 	GetPublicProfile(ctx context.Context, req *GetStickerProfileRequest) (*GetStickerProfileResponse, error)
 	SendMessageToSticker(ctx context.Context, s *SendMessageToStickerRequest) (*SendMessageToStickerResponse, error)
 	ListMyStickers(ctx context.Context, l *ListMyStickersRequest) (*ListMyStickersResponse, error)
-	Get(ctx context.Context, req *GetStickerRequest) (*sticker.Sticker, error)
-	UpdateSticker(ctx context.Context, u *UpdateMyStickerRequest) (*sticker.Sticker, error)
-	ListMessages(ctx context.Context, l *ListMessagesRequest) ([]*sticker.Message, error)
+	Get(ctx context.Context, req *GetStickerRequest) (*sticker2.Sticker, error)
+	UpdateSticker(ctx context.Context, u *UpdateMyStickerRequest) (*sticker2.Sticker, error)
+	ListMessages(ctx context.Context, l *ListMessagesRequest) ([]*sticker2.Message, error)
 	CreateQrCode(ctx context.Context, d *DownloadQRCodeRequest) ([]byte, error)
+	SetMessageAsRead(ctx context.Context, s *SetMessageAsReadRequest) (*SetMessageAsReadResponse, error)
 }
 
 type StickerHandler struct {
@@ -52,6 +53,8 @@ func (h *StickerHandler) RegisterRoutes(e *echo.Echo) {
 	e.PUT("/v1/stickers/:id", h.UpdateMySticker, MiddlewareTokenVerification(h.tp))
 	// Get sticker messages
 	e.GET("/v1/sticker/:id/messages", h.ListMessages, MiddlewareTokenVerification(h.tp))
+	// Set message as read
+	e.PUT("/v1/sticker/:stickerID/messages/:messageID/read", h.SetMessageAsRead, MiddlewareTokenVerification(h.tp))
 
 	// Download QR code for sticker
 	e.GET("/v1/stickers/:id/download", h.DownloadQRCode, MiddlewareTokenVerification(h.tp))
@@ -171,7 +174,7 @@ type (
 		Limit  int `query:"limit" default:"100"`
 	}
 	ListMyStickersResponse struct {
-		Stickers []*sticker.Sticker `json:"stickers"`
+		Stickers []*sticker2.Sticker `json:"stickers"`
 	}
 )
 
@@ -307,4 +310,33 @@ func (h *StickerHandler) DownloadQRCode(c echo.Context) error {
 	c.Response().Header().Set(echo.HeaderContentType, "image/png")
 	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=sticker-"+req.ID+"-qrcode.png")
 	return c.Blob(http.StatusOK, "image/png", qrCode)
+}
+
+type (
+	SetMessageAsReadRequest struct {
+		StickerID string `param:"stickerID"`
+		MessageID string `param:"messageID"`
+
+		UserID string `json:"-"`
+	}
+
+	SetMessageAsReadResponse struct{}
+)
+
+func (h *StickerHandler) SetMessageAsRead(c echo.Context) error {
+	var req SetMessageAsReadRequest
+	if err := c.Bind(&req); err != nil {
+		return errors.Wrap(ErrBadRequest, err.Error())
+	}
+
+	claims := GetClaims(c)
+	req.UserID = claims.ID
+	if req.StickerID == "" || req.MessageID == "" {
+		return errors.Wrap(ErrBadRequest, "stickerID and messageID are required")
+	}
+	res, err := h.svc.SetMessageAsRead(c.Request().Context(), &req)
+	if err != nil {
+		return errors.Wrap(err, "failed to set message as read")
+	}
+	return c.JSON(http.StatusOK, res)
 }

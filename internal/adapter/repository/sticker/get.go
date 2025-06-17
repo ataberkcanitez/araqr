@@ -2,8 +2,7 @@ package sticker
 
 import (
 	"context"
-	"fmt"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/cockroachdb/errors"
 	"github.com/jackc/pgx/v4"
 )
@@ -30,7 +29,6 @@ FROM stickers WHERE id = $1
 `
 
 func (r *Repository) GetByID(ctx context.Context, id string) (*sticker.Sticker, error) {
-	fmt.Println("Executing GetByID with ID:", id)
 	var s sticker.Sticker
 	err := r.DB.QueryRow(ctx, GetStickerQuery, id).Scan(
 		&s.ID,

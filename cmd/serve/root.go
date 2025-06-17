@@ -185,7 +185,7 @@ func createHandlers(ctx context.Context, cfg *serveConfig) ([]serverHandler, err
 	stickerSvc := sticker.NewService(userPg, stickerRepository, messageRepository)
 
 	return []serverHandler{
-		web.NewAuthHandler(authSvc),
+		web.NewAuthHandler(authSvc, authSvc),
 		web.NewStickerHandler(stickerSvc, authSvc),
 	}, nil
 }

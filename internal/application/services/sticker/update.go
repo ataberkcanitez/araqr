@@ -2,8 +2,9 @@ package sticker
 
 import (
 	"context"
+	"fmt"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"time"
 )
 
@@ -19,6 +20,7 @@ func (svc *Service) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerR
 		return nil, sticker.ErrStickerNotOwnedByUser
 	}
 
+	fmt.Printf("update request: %+v\n\n", req)
 	stx.Active = req.Active
 	stx.Name = req.Name
 	stx.Description = req.Description

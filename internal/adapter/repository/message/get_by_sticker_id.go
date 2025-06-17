@@ -2,11 +2,11 @@ package message
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/internal/domain/sticker"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 )
 
 const GetMessageByStickerIDQuery = `
-SELECT id, sticker_id, message, urgency_level, created_at
+SELECT id, sticker_id, message, urgency_level, read, updated_at, created_at
 FROM messages 
 WHERE sticker_id = $1
 LIMIT $2 OFFSET $3
@@ -26,6 +26,8 @@ func (r *Repository) GetByStickerID(ctx context.Context, id string, limit int, p
 			&m.StickerID,
 			&m.Message,
 			&m.UrgencyLevel,
+			&m.Read,
+			&m.UpdatedAt,
 			&m.CreatedAt,
 		)
 		if err != nil {

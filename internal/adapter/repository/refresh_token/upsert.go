@@ -2,7 +2,7 @@ package refresh_token
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/internal/domain/auth"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/auth"
 	"time"
 )
 

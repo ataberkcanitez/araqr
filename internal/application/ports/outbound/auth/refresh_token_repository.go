@@ -2,7 +2,7 @@ package auth
 
 import (
 	"context"
-	"github.com/ataberkcanitez/araqr/internal/domain/auth"
+	"github.com/ataberkcanitez/araqr/internal/application/domain/auth"
 )
 
 type RefreshTokenRepository interface {
