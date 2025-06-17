@@ -3,11 +3,13 @@ package serve
 import (
 	"context"
 	messagesRepo "github.com/ataberkcanitez/araqr/internal/adapter/repository/message"
+	notificationRepo "github.com/ataberkcanitez/araqr/internal/adapter/repository/notification"
 	"github.com/ataberkcanitez/araqr/internal/adapter/repository/refresh_token"
 	stickerRepo "github.com/ataberkcanitez/araqr/internal/adapter/repository/sticker"
 	"github.com/ataberkcanitez/araqr/internal/adapter/repository/user"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/application/services/auth"
+	"github.com/ataberkcanitez/araqr/internal/application/services/notification"
 	"github.com/ataberkcanitez/araqr/internal/application/services/sticker"
 	"github.com/ataberkcanitez/araqr/log"
 	"github.com/ataberkcanitez/araqr/pgsql"
@@ -184,8 +186,13 @@ func createHandlers(ctx context.Context, cfg *serveConfig) ([]serverHandler, err
 	authSvc := auth.NewService(&cfg.Auth, userPg, refreshTokenPg)
 	stickerSvc := sticker.NewService(userPg, stickerRepository, messageRepository)
 
+	// notification
+	notificationRepository := notificationRepo.NewNotificationRepository(db)
+	notificationSvc := notification.NewService(notificationRepository)
+
 	return []serverHandler{
 		web.NewAuthHandler(authSvc, authSvc),
 		web.NewStickerHandler(stickerSvc, authSvc),
+		web.NewNotificationHandler(notificationSvc, authSvc),
 	}, nil
 }
