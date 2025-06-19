@@ -7,24 +7,33 @@ import (
 
 const ListStickersByUserIDQuery = `
 SELECT 
-	id, 
-	active, 
-	name, 
-	description, 
-	image_url, 
-	show_phone_number, 
-	phone_number, 
-	show_email, 
-	email, 
-	show_instagram, 
-	instagram_url, 
-	show_facebook, 
-	facebook_url, 
-	user_id, 
-	created_at, 
-	updated_at
-FROM stickers
-WHERE user_id = $1
+s.id, 
+    s.active, 
+    s.name, 
+    s.description, 
+    s.image_url, 
+    s.show_phone_number, 
+    s.phone_number, 
+    s.show_email, 
+    s.email, 
+    s.show_instagram, 
+    s.instagram_url, 
+    s.show_facebook, 
+    s.facebook_url, 
+    s.user_id, 
+    s.created_at, 
+    s.updated_at,
+    COUNT(m.id) FILTER (WHERE m.read = false) AS unread_messages_count
+FROM stickers s
+LEFT JOIN messages m ON m.sticker_Id = s.id
+WHERE s.user_id = $1
+GROUP BY
+    s.id, s.active, s.name, s.description, s.image_url,
+    s.show_phone_number, s.phone_number,
+    s.show_email, s.email,
+    s.show_instagram, s.instagram_url,
+    s.show_facebook, s.facebook_url,
+    s.user_id, s.created_at, s.updated_at
 LIMIT $2 OFFSET $3
 `
 
@@ -55,6 +64,7 @@ func (r *Repository) ListByUserID(ctx context.Context, userID string, limit, pag
 			&s.UserID,
 			&s.CreatedAt,
 			&s.UpdatedAt,
+			&s.UnreadMessageCount,
 		)
 		if err != nil {
 			return nil, err
