@@ -11,8 +11,8 @@ import (
 	"image/png"
 )
 
-func (svc *Service) CreateQrCode(ctx context.Context, req *web.DownloadQRCodeRequest) ([]byte, error) {
-	stx, err := svc.Get(ctx, &web.GetStickerRequest{ID: req.ID})
+func (s *Service) CreateQrCode(ctx context.Context, req *web.DownloadQRCodeRequest) ([]byte, error) {
+	stx, err := s.Get(ctx, &web.GetStickerRequest{ID: req.ID})
 	if err != nil {
 		return nil, err
 	}

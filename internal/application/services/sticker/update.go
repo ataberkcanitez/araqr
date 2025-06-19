@@ -2,14 +2,13 @@ package sticker
 
 import (
 	"context"
-	"fmt"
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"time"
 )
 
-func (svc *Service) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerRequest) (*sticker.Sticker, error) {
-	stx, err := svc.Get(ctx, &web.GetStickerRequest{ID: req.ID})
+func (s *Service) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerRequest) (*sticker.Sticker, error) {
+	stx, err := s.Get(ctx, &web.GetStickerRequest{ID: req.ID})
 	if err != nil {
 		return nil, err
 	}
@@ -20,7 +19,6 @@ func (svc *Service) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerR
 		return nil, sticker.ErrStickerNotOwnedByUser
 	}
 
-	fmt.Printf("update request: %+v\n\n", req)
 	stx.Active = req.Active
 	stx.Name = req.Name
 	stx.Description = req.Description
@@ -34,7 +32,7 @@ func (svc *Service) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerR
 	stx.FacebookURL = req.FacebookURL
 	stx.UpdatedAt = time.Now()
 
-	if err := svc.stickerRepository.Update(ctx, stx); err != nil {
+	if err := s.stickerRepository.Update(ctx, stx); err != nil {
 		return nil, err
 	}
 	return stx, nil

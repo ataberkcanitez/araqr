@@ -7,8 +7,8 @@ import (
 	"github.com/cockroachdb/errors"
 )
 
-func (svc *Service) Get(ctx context.Context, req *web.GetStickerRequest) (*sticker.Sticker, error) {
-	stx, err := svc.stickerRepository.GetByID(ctx, req.ID)
+func (s *Service) Get(ctx context.Context, req *web.GetStickerRequest) (*sticker.Sticker, error) {
+	stx, err := s.stickerRepository.GetByID(ctx, req.ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get sticker")
 	}

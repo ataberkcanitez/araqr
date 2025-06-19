@@ -8,8 +8,12 @@ import (
 	"time"
 )
 
-func (svc *Service) SendMessageToSticker(ctx context.Context, req *web.SendMessageToStickerRequest) (*web.SendMessageToStickerResponse, error) {
-	stx, err := svc.stickerRepository.GetByID(ctx, req.ID)
+// SendMessageToSticker New feature idea:
+// - Lets get IP address of sender and store it in the message
+// - Lets allow sticker owner to block sender IP address
+// - If the sender IP address is blocked, do not allow sending message.
+func (s *Service) SendMessageToSticker(ctx context.Context, req *web.SendMessageToStickerRequest) (*web.SendMessageToStickerResponse, error) {
+	stx, err := s.stickerRepository.GetByID(ctx, req.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +33,7 @@ func (svc *Service) SendMessageToSticker(ctx context.Context, req *web.SendMessa
 		Read:         false,
 		CreatedAt:    time.Now(),
 	}
-	if err := svc.messageRepository.Create(ctx, msg); err != nil {
+	if err := s.messageRepository.Create(ctx, msg); err != nil {
 		return nil, err
 	}
 

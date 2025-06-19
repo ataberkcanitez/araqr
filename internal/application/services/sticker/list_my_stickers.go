@@ -8,8 +8,8 @@ import (
 	"sort"
 )
 
-func (svc *Service) ListMyStickers(ctx context.Context, req *web.ListMyStickersRequest) (*web.ListMyStickersResponse, error) {
-	stickers, err := svc.stickerRepository.ListByUserID(ctx, req.UserID, req.Limit, req.Page)
+func (s *Service) ListMyStickers(ctx context.Context, req *web.ListMyStickersRequest) (*web.ListMyStickersResponse, error) {
+	stickers, err := s.stickerRepository.ListByUserID(ctx, req.UserID, req.Limit, req.Page)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to list stickers for user")
 	}

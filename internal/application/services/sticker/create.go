@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (svc *Service) Create(ctx context.Context, req *web.CreateStickerRequest) ([]string, error) {
+func (s *Service) Create(ctx context.Context, req *web.CreateStickerRequest) ([]string, error) {
 	now := time.Now()
 	var stickerIds []string
 	for i := 0; i < req.NumberOfStickers; i++ {
@@ -23,7 +23,7 @@ func (svc *Service) Create(ctx context.Context, req *web.CreateStickerRequest) (
 			CreatedAt:       now,
 			UpdatedAt:       now,
 		}
-		_, err := svc.stickerRepository.Create(ctx, stx)
+		_, err := s.stickerRepository.Create(ctx, stx)
 		if err != nil {
 			return []string{}, errors.Wrap(err, "failed to create sticker")
 		}
