@@ -12,7 +12,7 @@ func (svc *Service) GetPublicProfile(ctx context.Context, request *web.GetSticke
 		return nil, err
 	}
 
-	if stx == nil {
+	if stx == nil || stx.Active == false {
 		return nil, sticker.ErrStickerNotFound
 	}
 
