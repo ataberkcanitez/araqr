@@ -2,6 +2,7 @@ package sticker
 
 import (
 	"context"
+
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 )
@@ -23,9 +24,6 @@ func (s *Service) GetPublicProfile(ctx context.Context, request *web.GetStickerP
 	publicProfile.ImageURL = stx.ImageURL
 	if stx.ShowPhoneNumber {
 		publicProfile.PhoneNumber = stx.PhoneNumber
-	}
-	if stx.ShowEmail {
-		publicProfile.Email = stx.Email
 	}
 	if stx.ShowInstagram {
 		publicProfile.InstagramURL = stx.InstagramURL

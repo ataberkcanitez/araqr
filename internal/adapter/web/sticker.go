@@ -3,10 +3,11 @@ package web
 import (
 	"context"
 	"fmt"
+	"net/http"
+
 	sticker2 "github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/cockroachdb/errors"
 	"github.com/labstack/echo/v4"
-	"net/http"
 )
 
 type stickerSvc interface {
@@ -115,7 +116,6 @@ type (
 		Description  *string `json:"description"`
 		ImageURL     *string `json:"image_url"`
 		PhoneNumber  *string `json:"phone_number"`
-		Email        *string `json:"email"`
 		InstagramURL *string `json:"instagram_url"`
 		FacebookURL  *string `json:"facebook_url"`
 	}
@@ -229,8 +229,6 @@ type (
 		Description     *string `json:"description"`
 		ShowPhoneNumber bool    `json:"show_phone_number"`
 		PhoneNumber     *string `json:"phone_number"`
-		ShowEmail       bool    `json:"show_email"`
-		Email           *string `json:"email"`
 		ShowInstagram   bool    `json:"show_instagram"`
 		InstagramURL    *string `json:"instagram_url"`
 		ShowFacebook    bool    `json:"show_facebook"`

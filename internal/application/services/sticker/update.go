@@ -2,9 +2,10 @@ package sticker
 
 import (
 	"context"
+	"time"
+
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
-	"time"
 )
 
 func (s *Service) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerRequest) (*sticker.Sticker, error) {
@@ -24,8 +25,6 @@ func (s *Service) UpdateSticker(ctx context.Context, req *web.UpdateMyStickerReq
 	stx.Description = req.Description
 	stx.ShowPhoneNumber = req.ShowPhoneNumber
 	stx.PhoneNumber = req.PhoneNumber
-	stx.ShowEmail = req.ShowEmail
-	stx.Email = req.Email
 	stx.ShowInstagram = req.ShowInstagram
 	stx.InstagramURL = req.InstagramURL
 	stx.ShowFacebook = req.ShowFacebook

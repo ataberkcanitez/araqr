@@ -2,14 +2,15 @@ package sticker
 
 import (
 	"context"
+
 	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 )
 
 const insertStickersQuery = `
-INSERT INTO stickers ( id, active, name, description, image_url, show_phone_number, phone_number,
-show_email, email, show_instagram, instagram_url, show_facebook, facebook_url, user_id, created_at,
+INSERT INTO stickers ( id, active, name, description, image_url, show_phone_number, phone_number, 
+show_instagram, instagram_url, show_facebook, facebook_url, user_id, created_at,
 updated_at
-) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16 );
+) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14 );
 `
 
 func (r *Repository) Create(ctx context.Context, s *sticker.Sticker) (*sticker.Sticker, error) {
@@ -21,8 +22,6 @@ func (r *Repository) Create(ctx context.Context, s *sticker.Sticker) (*sticker.S
 		s.ImageURL,
 		s.ShowPhoneNumber,
 		s.PhoneNumber,
-		s.ShowEmail,
-		s.Email,
 		s.ShowInstagram,
 		s.InstagramURL,
 		s.ShowFacebook,

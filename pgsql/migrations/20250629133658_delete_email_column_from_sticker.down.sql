@@ -1,0 +1,9 @@
+BEGIN;
+
+ALTER TABLE stickers
+    ADD COLUMN show_email BOOLEAN NOT NULL DEFAULT FALSE;
+
+ALTER TABLE stickers
+    ADD COLUMN email VARCHAR(255);
+
+COMMIT;

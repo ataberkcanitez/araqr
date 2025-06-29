@@ -12,8 +12,6 @@ type Sticker struct {
 	ImageURL           *string   `json:"image_url"`
 	ShowPhoneNumber    bool      `json:"show_phone_number"`
 	PhoneNumber        *string   `json:"phone_number"`
-	ShowEmail          bool      `json:"show_email"`
-	Email              *string   `json:"email"`
 	ShowInstagram      bool      `json:"show_instagram"`
 	InstagramURL       *string   `json:"instagram_url"`
 	ShowFacebook       bool      `json:"show_facebook"`
@@ -29,14 +27,12 @@ func (s *Sticker) Assign(userID string) {
 	s.UpdatedAt = time.Now()
 }
 
-func (s *Sticker) Update(name, description, imageURL *string, showPhoneNumber bool, phoneNumber *string, showEmail bool, email *string, showInstagram bool, instagramURL *string, showFacebook bool, facebookURL *string) {
+func (s *Sticker) Update(name, description, imageURL *string, showPhoneNumber bool, phoneNumber *string, showInstagram bool, instagramURL *string, showFacebook bool, facebookURL *string) {
 	s.Name = name
 	s.Description = description
 	s.ImageURL = imageURL
 	s.ShowPhoneNumber = showPhoneNumber
 	s.PhoneNumber = phoneNumber
-	s.ShowEmail = showEmail
-	s.Email = email
 	s.ShowInstagram = showInstagram
 	s.InstagramURL = instagramURL
 	s.ShowFacebook = showFacebook

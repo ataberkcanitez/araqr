@@ -2,6 +2,7 @@ package sticker
 
 import (
 	"context"
+
 	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 )
 
@@ -14,8 +15,6 @@ s.id,
     s.image_url, 
     s.show_phone_number, 
     s.phone_number, 
-    s.show_email, 
-    s.email, 
     s.show_instagram, 
     s.instagram_url, 
     s.show_facebook, 
@@ -30,7 +29,6 @@ WHERE s.user_id = $1
 GROUP BY
     s.id, s.active, s.name, s.description, s.image_url,
     s.show_phone_number, s.phone_number,
-    s.show_email, s.email,
     s.show_instagram, s.instagram_url,
     s.show_facebook, s.facebook_url,
     s.user_id, s.created_at, s.updated_at
@@ -55,8 +53,6 @@ func (r *Repository) ListByUserID(ctx context.Context, userID string, limit, pag
 			&s.ImageURL,
 			&s.ShowPhoneNumber,
 			&s.PhoneNumber,
-			&s.ShowEmail,
-			&s.Email,
 			&s.ShowInstagram,
 			&s.InstagramURL,
 			&s.ShowFacebook,

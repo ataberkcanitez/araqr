@@ -2,11 +2,12 @@ package sticker
 
 import (
 	"context"
+	"time"
+
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/cockroachdb/errors"
 	"github.com/google/uuid"
-	"time"
 )
 
 func (s *Service) Create(ctx context.Context, req *web.CreateStickerRequest) ([]string, error) {
@@ -17,7 +18,6 @@ func (s *Service) Create(ctx context.Context, req *web.CreateStickerRequest) ([]
 			ID:              uuid.NewString(),
 			Active:          false,
 			ShowPhoneNumber: false,
-			ShowEmail:       false,
 			ShowInstagram:   false,
 			ShowFacebook:    false,
 			CreatedAt:       now,

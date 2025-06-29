@@ -2,6 +2,11 @@ package serve
 
 import (
 	"context"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
+
 	messagesRepo "github.com/ataberkcanitez/araqr/internal/adapter/repository/message"
 	notificationRepo "github.com/ataberkcanitez/araqr/internal/adapter/repository/notification"
 	"github.com/ataberkcanitez/araqr/internal/adapter/repository/refresh_token"
@@ -14,10 +19,6 @@ import (
 	"github.com/ataberkcanitez/araqr/log"
 	"github.com/ataberkcanitez/araqr/pgsql"
 	pgsql2 "github.com/ataberkcanitez/araqr/pgsql"
-	"net/http"
-	"os"
-	"os/signal"
-	"time"
 
 	"github.com/cockroachdb/errors"
 	"github.com/labstack/echo/v4"
@@ -54,7 +55,7 @@ func New() *cobra.Command {
 	cmd.PersistentFlags().String("db.sslmode", "require", "database sslmode")
 
 	cmd.PersistentFlags().String("email.sender-address", "noreply@dev.araqr.com", "sender email address")
-	cmd.PersistentFlags().String("email.support.email-address", "destek@dev.randevumu.com", "support email address")
+	cmd.PersistentFlags().String("email.support.email-address", "destek@dev.araqr.com", "support email address")
 	cmd.PersistentFlags().String("email.support.phone-number", "+90 555 555 55 55", "support phone number")
 	cmd.PersistentFlags().String("email.support.website-link", "https://dev.araqr.com", "support website link")
 

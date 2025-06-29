@@ -2,6 +2,7 @@ package sticker
 
 import (
 	"context"
+
 	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 )
 
@@ -14,15 +15,13 @@ SET
     image_url = $4,
     show_phone_number = $5,
     phone_number = $6,
-    show_email = $7,
-    email = $8,
-    show_instagram = $9,
-    instagram_url = $10,
-    show_facebook = $11,
-    facebook_url = $12,
-    user_id = $13,
-    updated_at = $14
-WHERE id = $15;
+    show_instagram = $7,
+    instagram_url = $8,
+    show_facebook = $9,
+    facebook_url = $10,
+    user_id = $11,
+    updated_at = $12
+WHERE id = $13;
 `
 
 func (r *Repository) Update(ctx context.Context, stx *sticker.Sticker) error {
@@ -35,8 +34,6 @@ func (r *Repository) Update(ctx context.Context, stx *sticker.Sticker) error {
 		stx.ImageURL,
 		stx.ShowPhoneNumber,
 		stx.PhoneNumber,
-		stx.ShowEmail,
-		stx.Email,
 		stx.ShowInstagram,
 		stx.InstagramURL,
 		stx.ShowFacebook,

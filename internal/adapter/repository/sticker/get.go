@@ -2,6 +2,7 @@ package sticker
 
 import (
 	"context"
+
 	"github.com/ataberkcanitez/araqr/internal/application/domain/sticker"
 	"github.com/cockroachdb/errors"
 	"github.com/jackc/pgx/v4"
@@ -16,8 +17,6 @@ SELECT
 	image_url, 
 	show_phone_number, 
 	phone_number, 
-	show_email, 
-	email, 
 	show_instagram, 
 	instagram_url, 
 	show_facebook, 
@@ -38,8 +37,6 @@ func (r *Repository) GetByID(ctx context.Context, id string) (*sticker.Sticker, 
 		&s.ImageURL,
 		&s.ShowPhoneNumber,
 		&s.PhoneNumber,
-		&s.ShowEmail,
-		&s.Email,
 		&s.ShowInstagram,
 		&s.InstagramURL,
 		&s.ShowFacebook,
