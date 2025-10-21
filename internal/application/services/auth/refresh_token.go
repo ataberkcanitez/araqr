@@ -2,9 +2,10 @@ package auth
 
 import (
 	"context"
+	"time"
+
 	"github.com/ataberkcanitez/araqr/internal/adapter/web"
 	"github.com/ataberkcanitez/araqr/internal/application/domain/auth"
-	"time"
 )
 
 func (s *Service) RefreshToken(ctx context.Context, req *web.RefreshTokenReq) (*web.RefreshTokenRes, error) {
@@ -24,6 +25,10 @@ func (s *Service) RefreshToken(ctx context.Context, req *web.RefreshTokenReq) (*
 
 	t, err := s.generateToken(ctx, user)
 	if err != nil {
+		return nil, err
+	}
+	refreshToken.Token = t.RefreshToken.Token
+	if err := s.refreshTokenRepository.Upsert(ctx, refreshToken); err != nil {
 		return nil, err
 	}
 	return &web.RefreshTokenRes{
